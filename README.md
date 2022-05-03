@@ -1,4 +1,4 @@
-# path
+# A* Path Finder
 This is am implementation of the A* Path Finder algorithm.
 I remmember it from my classes, some yars ago. So I decided to do this all by my head.
 
