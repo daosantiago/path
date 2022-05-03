@@ -1,5 +1,5 @@
 # A* Path Finder
-This is am implementation of the A* Path Finder algorithm.
+This is am implementation of the A* Path Finder algorithm. <br>
 I remmember it from my classes, some yars ago. So I decided to do this all by my head.
 
 First we have an empty tile map.
