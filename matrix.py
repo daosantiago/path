@@ -6,12 +6,30 @@ OFFSET = 5
 VARS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 
+class MyColors():
+    @staticmethod
+    def wall():
+        return (0, 0, 102)
+
+    @staticmethod
+    def empty():
+        return (96, 96, 96)
+    
+    @staticmethod
+    def point():
+        return (255, 0, 0)
+
+    @staticmethod
+    def path():
+        return (0, 255, 0)
+
+
 class Tile:
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.size = 9
-        self.color = (96, 96, 96)
+        self.color = MyColors.empty()
         self.value = 0
         self.rect = pg.Rect(self.x, self.y, self.size, self.size)
 
@@ -72,7 +90,7 @@ class TileMap:
             for y in range(self.height):
                 tile = self.tilesMatrix[x][y]
                 tile.value = 0
-                tile.color = (96, 96, 96)
+                tile.color = MyColors.empty()
         self.maze = False
         self.init_point = None
         self.end_point = None
@@ -87,12 +105,12 @@ class TileMap:
             if not self.init_point:
                 self.init_point = (x, y)
                 tile.value = 'I'
-                tile.color = (255, 0, 0)
+                tile.color = MyColors.point()
             else:
                 if not self.end_point:
                     self.end_point = (x, y)
                     tile.value = 'F'
-                    tile.color = (255, 0, 0)
+                    tile.color = MyColors.point()
 
     def printM(self):
         for x in range(self.width):
@@ -116,7 +134,7 @@ class TileMap:
 
                     r = int(random.randrange(0, 3))
                     if (r == 0):
-                        t.color = (0, 0, 102)
+                        t.color = MyColors.wall()
                         t.value = 'O'
             self.maze = True
 
@@ -134,8 +152,6 @@ class TileMap:
         next_tiles = []
         points.append(self.end_point)
         found = False
-
-        print('.', end='')
 
         while not found:
             for point in points:
@@ -157,7 +173,6 @@ class TileMap:
             next_tiles.clear()
             #found = True
 
-        print('.', end='')
         return True
 
     def add_value_to_path(self, value, path):
@@ -166,7 +181,7 @@ class TileMap:
         else:
             return path.value
 
-    def paint_next(self, tile, screen):
+    def paint_next(self, tile):
         next = None
         for var in VARS:
             x = tile.x
@@ -186,13 +201,13 @@ class TileMap:
                     if nei.value < next.value:
                         next = nei
 
-        next.color = (0, 255, 0)
+        next.color = MyColors.path()
         return next
 
-    def draw_path(self, screen):
+    def draw_path(self):
         x, y = self.init_point
         init = self.tilesMatrix[x][y]
         next = init
 
         while next.value != 'F':
-            next = self.paint_next(next, screen)
+            next = self.paint_next(next)

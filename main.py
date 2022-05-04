@@ -62,7 +62,7 @@ class Application():
 
                     if pg.key.get_pressed()[pg.K_1] or pg.key.get_pressed()[pg.K_KP1]:
                         if self.map.find_path():
-                            self.map.draw_path(self.screen)
+                            self.map.draw_path()
                     if pg.key.get_pressed()[pg.K_c]:
                         self.map.clear_map()
 
