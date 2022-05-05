@@ -75,6 +75,8 @@ class TileMap:
         self.maze = False
         self.init_point = None
         self.end_point = None
+        self.path = []
+        self.found = False
         self.tilesMatrix = [
             [0 for _ in range(self.height)] for _ in range(self.width)]
 
@@ -85,6 +87,19 @@ class TileMap:
                 tile.set_tile_pos(x, y)
                 self.tilesMatrix[x][y] = tile
 
+    def clear_path(self):
+        keep = ['O', 'I', 'F']
+        for x in range(self.width):
+            for y in range(self.height):
+                tile = self.tilesMatrix[x][y]
+                
+                if tile.value not in keep:
+                    tile.value = 0
+                    tile.color = MyColors.empty()
+        self.found = False
+
+        
+
     def clear_map(self):
         for x in range(self.width):
             for y in range(self.height):
@@ -94,6 +109,18 @@ class TileMap:
         self.maze = False
         self.init_point = None
         self.end_point = None
+        self.found = False
+
+    def add_wall(self, pos):
+        x = int(pos[0] / 10)
+        y = int(pos[1] / 10)
+        tile = self.tilesMatrix[x][y]
+
+        keep = ['O', 'I', 'F']
+        if tile.value not in keep:
+            if tile.value != self.init_point and tile.value != self.end_point:
+                tile.value = 'O'
+                tile.color = MyColors.wall()
 
 
     def get_clicked_tile(self, pos):
@@ -132,7 +159,7 @@ class TileMap:
                 for y in range(self.height):
                     t = self.tilesMatrix[x][y]
 
-                    r = int(random.randrange(0, 3))
+                    r = int(random.randrange(0, 4))
                     if (r == 0):
                         t.color = MyColors.wall()
                         t.value = 'O'
@@ -147,31 +174,37 @@ class TileMap:
         if not self.filled_init_end():
             print('Click the init and end point')
             return False
+        if self.found:
+            print('Path already found')
+            return False
 
         points = []
         next_tiles = []
         points.append(self.end_point)
-        found = False
+        self.found = False
 
-        while not found:
+        while not self.found:
             for point in points:
                 x, y = point
                 if (self.tilesMatrix[x][y]):
                     tile = self.tilesMatrix[x][y]
                     if tile.value == 'I':
-                        found = True
+                        self.found = True
                 else:
                     continue
                 next = tile.update_neighbors(self)
                 if isinstance(next, Tile):
-                    found = True
+                    self.found = True
                 else:
                     next_tiles.extend(next)
 
             points.clear()
             points = next_tiles.copy()
             next_tiles.clear()
-            #found = True
+
+            if len(points) == 0:
+                print("There's no path available")
+                return False
 
         return True
 

@@ -17,7 +17,6 @@ class Application():
         self.screen = pg.display.set_mode([self.width, self.height])
         self.center = (self.width / 2, self.height / 2)
         self.map = None
-        self.finder = Finder()
         pg.display.set_caption('A* Path Finder')
 
         print('Application has been Created')
@@ -47,7 +46,10 @@ class Application():
             for event in pg.event.get():
                 if (event.type == MOUSEBUTTONDOWN):
                     print(pg.mouse.get_pos())
-                    self.map.get_clicked_tile(pg.mouse.get_pos())
+                    if event.button == 1:
+                        self.map.get_clicked_tile(pg.mouse.get_pos())
+                    if event.button == 3:
+                        self.map.add_wall(pg.mouse.get_pos())
 
                 if (event.type == pg.QUIT):
                     run = False                   
@@ -65,6 +67,8 @@ class Application():
                             self.map.draw_path()
                     if pg.key.get_pressed()[pg.K_c]:
                         self.map.clear_map()
+                    if pg.key.get_pressed()[pg.K_v]:
+                        self.map.clear_path()
 
 
 
