@@ -2,6 +2,7 @@ import pygame as pg
 import random
 
 OFFSET = 5
+TILE_SIZE = 9
 # variations
 VARS = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
@@ -28,10 +29,11 @@ class Tile:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.size = 9
+        self.size = TILE_SIZE
         self.color = MyColors.empty()
         self.value = 0
         self.rect = pg.Rect(self.x, self.y, self.size, self.size)
+        self.area = ()
 
     def set_tile_pos(self, x, y):
         self.rect.x = (x * 10) + OFFSET

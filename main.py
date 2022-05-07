@@ -5,16 +5,16 @@ import datetime
 
 from pygame.locals import *
 from matrix import TileMap
-from finder import Finder
 
+MIN_OFFSET = 1
+SPACE_BETWEEN = 1
 OFFSET = 5
-
 
 class Application():
     def __init__(self) -> None:
         self.width = 810
         self.height = 610
-        self.screen = pg.display.set_mode([self.width, self.height])
+        self.screen = pg.display.set_mode([self.width, self.height], pg.RESIZABLE)
         self.center = (self.width / 2, self.height / 2)
         self.map = None
         pg.display.set_caption('A* Path Finder')
@@ -32,7 +32,6 @@ class Application():
 
     def loop(self):
         run = True
-        pg.font.init()
         background = pg.Surface(self.screen.get_size())
         background = background.convert()
         background.fill((0, 0, 0))
