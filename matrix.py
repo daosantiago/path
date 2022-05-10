@@ -64,6 +64,9 @@ class Tile:
                 if (x >= 0) and (y >= 0):
                     if tm.tilesMatrix[x][y].value == 0:
                         tm.tilesMatrix[x][y].value = val + 1
+                        tm.tilesMatrix[x][y].color = (10,100,10)
+                        tm.render(tm.screen)
+                        pg.display.flip()
                         next_tiles.append(((x), (y)))
                     if tm.tilesMatrix[x][y].value == 'I':
                         return tm.tilesMatrix[x][y]
@@ -79,6 +82,7 @@ class TileMap:
         self.end_point = None
         self.path = []
         self.found = False
+        self.screen = None
         self.tilesMatrix = [
             [0 for _ in range(self.height)] for _ in range(self.width)]
 
@@ -126,20 +130,23 @@ class TileMap:
 
 
     def get_clicked_tile(self, pos):
-        x = int(pos[0] / 10)
-        y = int(pos[1] / 10)
-        tile = self.tilesMatrix[x][y]
+        clicked_tile = None
 
-        if tile.value == 0:
+        for line in self.tilesMatrix:
+            for tile in line:
+                if tile.rect.collidepoint(pos):
+                    clicked_tile = tile
+
+        if clicked_tile and clicked_tile.value == 0:
             if not self.init_point:
-                self.init_point = (x, y)
-                tile.value = 'I'
-                tile.color = MyColors.point()
+                self.init_point = clicked_tile.x, clicked_tile.y
+                clicked_tile.value = 'I'
+                clicked_tile.color = MyColors.point()
             else:
                 if not self.end_point:
-                    self.end_point = (x, y)
-                    tile.value = 'F'
-                    tile.color = MyColors.point()
+                    self.end_point = clicked_tile.x, clicked_tile.y
+                    clicked_tile.value = 'F'
+                    clicked_tile.color = MyColors.point()
 
     def printM(self):
         for x in range(self.width):
@@ -161,7 +168,7 @@ class TileMap:
                 for y in range(self.height):
                     t = self.tilesMatrix[x][y]
 
-                    r = int(random.randrange(0, 4))
+                    r = int(random.randrange(0, 3))
                     if (r == 0):
                         t.color = MyColors.wall()
                         t.value = 'O'
