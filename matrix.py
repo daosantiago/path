@@ -46,7 +46,7 @@ class Tile:
             return False
         return True
 
-    def update_neighbors(self, tm):
+    def update_neighbors(self, tm, show_step):
         next_tiles = []
         x = self.x
         y = self.y
@@ -64,8 +64,11 @@ class Tile:
                 if (x >= 0) and (y >= 0):
                     if tm.tilesMatrix[x][y].value == 0:
                         tm.tilesMatrix[x][y].value = val + 1
-                        tm.tilesMatrix[x][y].color = (10,100,10)
-                        tm.render(tm.screen)
+
+                        if show_step:
+                            tm.tilesMatrix[x][y].color = (10,100,10)
+                            tm.render(tm.screen)
+                            
                         pg.display.flip()
                         next_tiles.append(((x), (y)))
                     if tm.tilesMatrix[x][y].value == 'I':
@@ -179,7 +182,7 @@ class TileMap:
             return False
         return True
 
-    def find_path(self):
+    def find_path(self, show_step):
         if not self.filled_init_end():
             print('Click the init and end point')
             return False
@@ -201,7 +204,7 @@ class TileMap:
                         self.found = True
                 else:
                     continue
-                next = tile.update_neighbors(self)
+                next = tile.update_neighbors(self, show_step)
                 if isinstance(next, Tile):
                     self.found = True
                 else:

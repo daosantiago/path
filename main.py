@@ -27,6 +27,7 @@ class Application():
 
     def init(self):
         self.map = TileMap(80, 60)
+        self.map.screen = self.screen
         self.map.init()
         print('Tile map created')
 
@@ -51,7 +52,7 @@ class Application():
                         self.map.add_wall(pg.mouse.get_pos())
 
                 if (event.type == pg.QUIT):
-                    run = False                   
+                    exit()        
 
                 if (event.type == KEYDOWN):
                     if(event.key == 32):
@@ -62,13 +63,20 @@ class Application():
                         run = False
 
                     if pg.key.get_pressed()[pg.K_1] or pg.key.get_pressed()[pg.K_KP1]:
-                        if self.map.find_path():
+                        show_step = False
+                        if self.map.find_path(show_step):
                             self.map.draw_path()
+
+                    if pg.key.get_pressed()[pg.K_2] or pg.key.get_pressed()[pg.K_KP2]:
+                        show_step = True
+                        if self.map.find_path(show_step):
+                            self.map.draw_path()
+
                     if pg.key.get_pressed()[pg.K_c]:
                         self.map.clear_map()
+
                     if pg.key.get_pressed()[pg.K_v]:
                         self.map.clear_path()
-
 
 
 
