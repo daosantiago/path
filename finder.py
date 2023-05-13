@@ -1,3 +1,0 @@
-
-class Finder():
-  pass
