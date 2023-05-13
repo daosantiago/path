@@ -1,5 +1,6 @@
-import pygame as pg
 import random
+
+import pygame as pg
 
 OFFSET = 5
 TILE_SIZE = 9
@@ -14,8 +15,8 @@ class MyColors():
 
     @staticmethod
     def empty():
-        return (96, 96, 96)
-    
+        return (100, 149, 237)
+
     @staticmethod
     def point():
         return (255, 0, 0)
@@ -66,9 +67,10 @@ class Tile:
                         tm.tilesMatrix[x][y].value = val + 1
 
                         if show_step:
-                            tm.tilesMatrix[x][y].color = (10,100,10)
+                            #tm.tilesMatrix[x][y].color = (10,100,10)
+                            tm.tilesMatrix[x][y].color = (tm.r, tm.g, tm.b)
                             tm.render(tm.screen)
-                            
+
                         pg.display.flip()
                         next_tiles.append(((x), (y)))
                     if tm.tilesMatrix[x][y].value == 'I':
@@ -86,6 +88,10 @@ class TileMap:
         self.path = []
         self.found = False
         self.screen = None
+        self.r = 250
+        self.g = 250
+        self.b = 250
+        # Create a matrix filled with zero
         self.tilesMatrix = [
             [0 for _ in range(self.height)] for _ in range(self.width)]
 
@@ -97,19 +103,23 @@ class TileMap:
                 self.tilesMatrix[x][y] = tile
 
     def clear_path(self):
+        self.r = 250
+        self.g = 250
+        self.b = 250
         keep = ['O', 'I', 'F']
         for x in range(self.width):
             for y in range(self.height):
                 tile = self.tilesMatrix[x][y]
-                
+
                 if tile.value not in keep:
                     tile.value = 0
                     tile.color = MyColors.empty()
         self.found = False
 
-        
-
     def clear_map(self):
+        self.r = 250
+        self.g = 250
+        self.b = 250
         for x in range(self.width):
             for y in range(self.height):
                 tile = self.tilesMatrix[x][y]
@@ -130,7 +140,6 @@ class TileMap:
             if tile.value != self.init_point and tile.value != self.end_point:
                 tile.value = 'O'
                 tile.color = MyColors.wall()
-
 
     def get_clicked_tile(self, pos):
         clicked_tile = None
@@ -196,6 +205,10 @@ class TileMap:
         self.found = False
 
         while not self.found:
+            if self.r > 2:
+                self.r -= 2
+                self.g -= 2
+                self.b -= 2
             for point in points:
                 x, y = point
                 if (self.tilesMatrix[x][y]):

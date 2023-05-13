@@ -1,20 +1,21 @@
-import math
 from tkinter import OFF
-import pygame as pg
-import datetime
 
+import pygame as pg
 from pygame.locals import *
+
 from matrix import TileMap
 
 MIN_OFFSET = 1
 SPACE_BETWEEN = 1
 OFFSET = 5
 
+
 class Application():
     def __init__(self) -> None:
         self.width = 810
         self.height = 610
-        self.screen = pg.display.set_mode([self.width, self.height], pg.RESIZABLE)
+        self.screen = pg.display.set_mode(
+            [self.width, self.height], pg.RESIZABLE)
         self.center = (self.width / 2, self.height / 2)
         self.map = None
         pg.display.set_caption('A* Path Finder')
@@ -52,11 +53,11 @@ class Application():
                         self.map.add_wall(pg.mouse.get_pos())
 
                 if (event.type == pg.QUIT):
-                    exit()        
+                    exit()
 
                 if (event.type == KEYDOWN):
                     if(event.key == 32):
-                        self.map.fill_maze()                        
+                        self.map.fill_maze()
 
                     if(event.key == 27):
                         print("Quiting")
@@ -77,7 +78,6 @@ class Application():
 
                     if pg.key.get_pressed()[pg.K_v]:
                         self.map.clear_path()
-
 
 
 if __name__ == '__main__':
